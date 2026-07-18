@@ -1,8 +1,8 @@
 import {useState} from "react";
+import {countries} from "./data/countries";
 import {
- countries,
- connect,
- disconnect
+ POST_connect,
+ POST_disconnect
 } from "./api/vpn";
 
 
@@ -11,8 +11,26 @@ export default function App(){
 const [vpn,setVpn]=useState({
  status:"Disconnected",
  country:null,
- ip:null
+ ip:""
 });
+
+
+function connect(country){
+
+setVpn(
+ POST_connect(country)
+);
+
+}
+
+
+function disconnect(){
+
+setVpn(
+ POST_disconnect()
+);
+
+}
 
 
 return (
@@ -24,44 +42,35 @@ return (
 Status: {vpn.status}
 </h3>
 
-
 {vpn.country &&
 <p>
-{vpn.country.flag} {vpn.country.name}
+Server: {vpn.country.flag} {vpn.country.name}
 <br/>
-IP: {vpn.ip}
+VPN IP: {vpn.ip}
 </p>
 }
 
 
-<button onClick={()=>{
-setVpn(disconnect());
-}}>
+<button onClick={disconnect}>
 Disconnect VPN
 </button>
 
 
 <h2>Country List</h2>
 
-
 {
 countries.map(c=>(
-
 <div key={c.code}>
 
 {c.flag} {c.name}
 
-<button onClick={()=>{
-setVpn(connect(c));
-}}>
+<button onClick={()=>connect(c)}>
 Connect VPN
 </button>
 
 </div>
-
 ))
 }
-
 
 </div>
 );
