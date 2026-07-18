@@ -6,20 +6,38 @@ export const VPN_API = {
 };
 
 
-export async function apiGet(url){
-  const res = await fetch(url);
-  return res.json();
+export function generateVPNIP(){
+  return `10.${random()}.${random()}.${random()}`;
+}
+
+function random(){
+  return Math.floor(Math.random()*256);
 }
 
 
-export async function apiPost(url,data={}){
-  const res = await fetch(url,{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json"
-    },
-    body:JSON.stringify(data)
-  });
+export function GET_status(state){
+  return {
+    success:true,
+    ...state
+  };
+}
 
-  return res.json();
+
+export function POST_connect(country){
+  return {
+    success:true,
+    status:"Connected",
+    country,
+    ip:generateVPNIP()
+  };
+}
+
+
+export function POST_disconnect(){
+  return {
+    success:true,
+    status:"Disconnected",
+    country:null,
+    ip:null
+  };
 }
