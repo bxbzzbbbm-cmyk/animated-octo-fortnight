@@ -1,64 +1,25 @@
 export const VPN_API = {
   countries: "/api/vpn/countries",
+  status: "/api/vpn/status",
   connect: "/api/vpn/connect",
-  disconnect: "/api/vpn/disconnect",
-  status: "/api/vpn/status"
+  disconnect: "/api/vpn/disconnect"
 };
 
 
-export const countries = [
-  { code:"US", name:"United States", flag:"🇺🇸" },
-  { code:"GB", name:"United Kingdom", flag:"🇬🇧" },
-  { code:"CA", name:"Canada", flag:"🇨🇦" },
-  { code:"DE", name:"Germany", flag:"🇩🇪" },
-  { code:"FR", name:"France", flag:"🇫🇷" },
-  { code:"JP", name:"Japan", flag:"🇯🇵" },
-  { code:"IN", name:"India", flag:"🇮🇳" },
-  { code:"BR", name:"Brazil", flag:"🇧🇷" },
-  { code:"AU", name:"Australia", flag:"🇦🇺" },
-  { code:"IT", name:"Italy", flag:"🇮🇹" }
-];
-
-
-export function createVPNIP(){
-  return `10.${num()}.${num()}.${num()}`;
+export async function apiGet(url){
+  const res = await fetch(url);
+  return res.json();
 }
 
 
-function num(){
-  return Math.floor(Math.random()*256);
-}
+export async function apiPost(url,data={}){
+  const res = await fetch(url,{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify(data)
+  });
 
-
-export function connect(country){
-
-  return {
-    success:true,
-    status:"Connected",
-    country:country,
-    ip:createVPNIP()
-  };
-
-}
-
-
-export function disconnect(){
-
-  return {
-    success:true,
-    status:"Disconnected",
-    country:null,
-    ip:null
-  };
-
-}
-
-
-export function getStatus(state){
-
-  return {
-    success:true,
-    ...state
-  };
-
+  return res.json();
 }
